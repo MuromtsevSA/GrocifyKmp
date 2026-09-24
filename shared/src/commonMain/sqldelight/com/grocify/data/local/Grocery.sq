@@ -1,0 +1,43 @@
+CREATE TABLE grocery_item (
+    id TEXT NOT NULL PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    category TEXT NOT NULL,
+    quantity INTEGER NOT NULL DEFAULT 1,
+    purchased INTEGER NOT NULL DEFAULT 0,
+    priority TEXT NOT NULL DEFAULT 'medium',
+    updated_at INTEGER NOT NULL
+);
+
+CREATE INDEX grocery_item_user_id ON grocery_item(user_id);
+
+selectAllForUser:
+SELECT * FROM grocery_item
+WHERE user_id = ?
+ORDER BY updated_at DESC;
+
+selectById:
+SELECT * FROM grocery_item
+WHERE id = ? AND user_id = ?;
+
+insertItem:
+INSERT INTO grocery_item(id, user_id, name, category, quantity, purchased, priority, updated_at)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+updateQuantity:
+UPDATE grocery_item
+SET quantity = ?, updated_at = ?
+WHERE id = ? AND user_id = ?;
+
+updatePurchased:
+UPDATE grocery_item
+SET purchased = ?, updated_at = ?
+WHERE id = ? AND user_id = ?;
+
+deleteItem:
+DELETE FROM grocery_item
+WHERE id = ? AND user_id = ?;
+
+clearPurchasedForUser:
+DELETE FROM grocery_item
+WHERE user_id = ? AND purchased = 1;

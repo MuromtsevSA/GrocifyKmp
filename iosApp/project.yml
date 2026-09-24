@@ -1,0 +1,32 @@
+# XcodeGen config for iosApp (optional)
+# brew install xcodegen && cd iosApp && xcodegen generate
+name: GrocifyIos
+options:
+  bundleIdPrefix: com.grocify
+  deploymentTarget:
+    iOS: "16.0"
+  xcodeVersion: "15.0"
+settings:
+  base:
+    PRODUCT_BUNDLE_IDENTIFIER: com.grocify.ios
+    CLERK_PUBLISHABLE_KEY: $(CLERK_PUBLISHABLE_KEY)
+configFiles:
+  Debug: Configuration/Config.xcconfig
+  Release: Configuration/Config.xcconfig
+targets:
+  iosApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: iosApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.grocify.ios
+        INFOPLIST_FILE: iosApp/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+    dependencies:
+      - framework: Shared
+        embed: true
+# After generate: File → Add Package Dependencies → https://github.com/clerk/clerk-ios
+# Add ClerkKit + ClerkKitUI to iosApp target.
+# Wire Gradle embedAndSignAppleFrameworkForXcode as a pre-build script (KMP template).
